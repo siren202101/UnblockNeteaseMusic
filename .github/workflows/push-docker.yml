@@ -2,12 +2,15 @@ name: Build and Push Docker image
 
 on:
   push:
-    branches: [ "main" ]   # 当你 push 到 main 分支时触发
-  workflow_dispatch:        # 允许手动触发
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -18,7 +21,8 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          # 先尝试用 CR_PAT，如果没有就用 GITHUB_TOKEN
+          password: ${{ secrets.CR_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -26,5 +30,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/unblock-netease-music:latest
-            ghcr.io/${{ github.repository_owner }}/unblock-netease-music:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/unblockneteasemusic:latest
+            ghcr.io/${{ github.repository_owner }}/unblockneteasemusic:${{ github.sha }}
