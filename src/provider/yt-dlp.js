@@ -15,7 +15,7 @@ const YtDlpNotInstalled = require('../exceptions/YtDlpNotInstalled');
  *
  * @param {string} query
  */
-const dlArguments = (query) => ['-f', '140', '--dump-json', query];
+const dlArguments = (query) => ['--cookies', 'C:\\Users\\LMGSG\\Downloads\\cookies.txt', '-f', '140', '--dump-json', query];
 /** @param {string} keyword */
 const byKeyword = (keyword) => `ytsearch1:${keyword}`;
 const logger = logScope('provider/yt-dlp');
